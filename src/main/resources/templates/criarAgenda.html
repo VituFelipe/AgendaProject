@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Agenda</title>
+</head>
+<body>
+<h2>Criar Agenda</h2>
+<form th:action="@{/agenda/criar}" th:object="${agenda}" method="post">
+    <label for="descricao">Descrição:</label>
+    <input type="text" id="descricao" th:field="*{descricao}">
+
+    <label for="data">Data:</label>
+    <input type="date" id="data" th:field="*{data}">
+
+    <button type="submit">Criar</button>
+</form>
+</body>
+</html>
