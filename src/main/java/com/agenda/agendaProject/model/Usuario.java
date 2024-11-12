@@ -1,6 +1,8 @@
 package com.agenda.agendaProject.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -10,7 +12,8 @@ public class Usuario {
     private Long id;
     private String usuario;
     private String senha;
-    private Date dtCadastro;
+
+    private LocalDate dtCadastro;
 
     @ManyToOne
     @JoinColumn(name = "tipo_acesso_id")
@@ -40,13 +43,14 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Date getDtCadastro() {
+    public LocalDate getDtCadastro() {
         return dtCadastro;
     }
 
-    public void setDtCadastro(Date dtCadastro) {
+    public void setDtCadastro(LocalDate dtCadastro) {
         this.dtCadastro = dtCadastro;
     }
+
 
     public TipoAcesso getTipoAcesso() {
         return tipoAcesso;

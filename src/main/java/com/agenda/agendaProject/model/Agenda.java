@@ -1,20 +1,29 @@
 package com.agenda.agendaProject.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Agenda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int agendaId;
+
+
     private String descricao;
 
     @ManyToOne
     private Servico servico;
 
-    private Date data;
+    private LocalDate data;
 
     @ManyToOne
     private Cliente cliente;
@@ -22,7 +31,12 @@ public class Agenda {
     @ManyToOne
     private Usuario usuario;
 
-    public int getId() {
+    @ManyToOne
+    private Funcionario funcionario;
+
+    public boolean status;
+
+    public long getId() {
         return agendaId;
     }
 
@@ -46,12 +60,8 @@ public class Agenda {
         this.servico = servico;
     }
 
-    public Date getData() {
+    public LocalDateTime getData() {
         return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
     }
 
     public Cliente getCliente() {
@@ -69,4 +79,53 @@ public class Agenda {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    }
 }
+
+//@Entity
+//@Data
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Table(name = "agendas")
+//public class Agenda {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//
+//    private String descricao;
+//
+//    private LocalDateTime dataHora;
+//
+//    private Cliente cliente;
+//
+//    @ManyToOne
+//    private Servico servico;
+//
+//    @ManyToOne
+//    private Funcionario funcionario;
+//
+//    private Boolean status = false;
+
+//}

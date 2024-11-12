@@ -12,8 +12,12 @@ public class Cliente {
     private String telefone;
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "endereco_id")
+//    @ManyToOne
+//    @JoinColumn(name = "endereco_id")
+//
+//    ou
+//
+//    @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 
 
