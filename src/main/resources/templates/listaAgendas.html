@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Agendas</title>
+</head>
+<body>
+<h1>Lista de Agendas</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="agenda : ${agendas}">
+        <td th:text="${agenda.id}"></td>
+        <td th:text="${agenda.descricao}"></td>
+        <td th:text="${agenda.data}"></td>
+        <td th:text="${agenda.status} ? 'Realizado' : 'Pendente'"></td>
+        <td>
+            <a th:href="@{/agendas/editar/{id}(id=${agenda.id})}">Editar</a> |
+            <a th:href="@{/agendas/deletar/{id}(id=${agenda.id})}">Deletar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -15,7 +15,7 @@ public class Funcionario {
     private double salario;
 
     @OneToOne
-    private Endereco endereco;
+    private EnderecoDTO endereco;
 
     public Long getId() {
         return id;
@@ -57,7 +57,7 @@ public class Funcionario {
         this.salario = salario;
     }
 
-    public Endereco getEndereco() {
+    public EnderecoDTO getEndereco() {
         return endereco;
     }
 

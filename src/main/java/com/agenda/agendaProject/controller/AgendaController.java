@@ -41,6 +41,12 @@ public class AgendaController {
     @Autowired
     private ServicoService servicoService;
 
+    @GetMapping("/form")
+    public String formAgenda(Model model) {
+        model.addAttribute("agendaDTO", new AgendaDTO());
+        return "agendaForm";
+    }
+
     @PostMapping("/salvar")
     public String salvarAgendamento(@ModelAttribute("agenda") Agenda agenda) {
         agenda.setStatus(false);
@@ -48,42 +54,53 @@ public class AgendaController {
         return "redirect:/agenda";
     }
 
-    @GetMapping
-    public List<AgendaDTO> listarAgendas(){
+    @GetMapping("/editar/{id}")
+    public String editarAgenda(@PathVariable("id") Long id, Model model) {
+        AgendaDTO agendaDTO = agendaService.buscarPorId(id);
+        model.addAttribute("agendaDTO", agendaDTO);
+        return "agendaForm";
+    }
+
+
+    @GetMapping("/listar")
+    public List<AgendaDTO> listarAgendas(Model model) {
         return agendaService.listarAgendas();
+    }
+     // to testando os dois
+    @GetMapping("/listar")
+    public String listarAgenda(Model model){
+        List<AgendaDTO> agendas = agendaService.listarAgendas();
+        model.addAttribute("agendas", agendas);
+        return "listaAgendas";
     }
 
     @GetMapping("/{id}")
-    public AgendaDTO buscarAgendaPorId(@PathVariable Long id){
+    public AgendaDTO buscarAgendaPorId(@PathVariable Long id) {
         return agendaService.buscarPorId(id);
     }
 
 //    @PostMapping
-//    public AgendaDTO criarAgenda(@RequestBody AgendaDTO agendaDTO){
-//        return  agendaService.salvarAgenda(agendaDTO);
+//    public ResponseEntity<AgendaDTO> criarAgenda(@Valid @RequestBody AgendaDTO agendaDTO, BindingResult result) {
+//        if (result.hasErrors()) {
+//            return ResponseEntity.badRequest().build(); // Retorna 400 se houver erros de validação
+//        }
+//        AgendaDTO savedAgenda = agendaService.salvarAgenda(agendaDTO);
+//        return ResponseEntity.ok(savedAgenda); // Retorna 200 com a agenda criada
 //    }
 
-    @PostMapping
-    public ResponseEntity<AgendaDTO> criarAgenda(@Valid @RequestBody AgendaDTO agendaDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().build(); // Retorna 400 se houver erros de validação
-        }
-        AgendaDTO savedAgenda = agendaService.salvarAgenda(agendaDTO);
-        return ResponseEntity.ok(savedAgenda); // Retorna 200 com a agenda criada
-    }
-
     @PutMapping("/{id}/realizar")
-    public AgendaDTO realizarServico(@PathVariable Long id){
+    public AgendaDTO realizarServico(@PathVariable Long id) {
         return agendaService.realizarServico(id);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AgendaDTO> atualizarAgenda(@PathVariable Long id, @Valid @RequestBody AgendaDTO agendaDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+    @PostMapping("/atualizar/{id}")
+    public String atualizarAgenda(@PathVariable("id") Long id, @ModelAttribute("agendaDTO") AgendaDTO agendaDTO) {
+        //chamar atualizar agenda
+        return "redirect:/agendas/listar";
+    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarAgenda(@PathVariable Long id){
+    public ResponseEntity<Void> deletarAgenda(@PathVariable Long id) {
         agendaService.deletarAgenda(id);
         return ResponseEntity.noContent().build();
     }
@@ -91,52 +108,4 @@ public class AgendaController {
 
 
 
-//    @Autowired
-//    private AgendaRepository agendaRepository;
-//
-//    @Autowired
-//    private ClienteRepository clienteRepository;
-//
-//    @Autowired
-//    private ServicoRepository servicoRepository;
-//
-//    @Autowired
-//    private UsuarioRepository usuarioRepository;
-//
-//
-//    @GetMapping("/agenda")
-//    public String listarAgenda(Model model){
-//        model.addAttribute("agenda", agendaRepository.findAll());
-//        model.addAttribute("clientes", clienteRepository.findAll());
-//        model.addAttribute("servicos", servicoRepository.findAll());
-//        model.addAttribute("usuarios", usuarioRepository.findAll());
-//        return "agenda";
-//    }
-//
-//    @PostMapping("/agenda/save")
-//    public String saveAgenda(
-//            @RequestParam("descricao") String descricao,
-//            @RequestParam("data") String data,
-//            @RequestParam("clienteId") Long clienteId,
-//            @RequestParam("servicoId") Long servicoId,
-//            @RequestParam("usuarioId") Long usuarioId) {
-//
-//        Agenda agenda = new Agenda();
-//        agenda.setDescricao(descricao);
-//        // colocar set da data
-//
-//        Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
-//        Servico servico = servicoRepository.findById(servicoId).orElse(null);
-//        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
-//
-//
-//        agenda.setCliente(cliente);
-//        agenda.setServico(servico);
-//        agenda.setUsuario(usuario);
-//
-//        //chamar agenda service pra salvar
-//
-//        return "redirect:/agenda";
-//    }
-//
-//}
+

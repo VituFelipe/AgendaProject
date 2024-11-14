@@ -11,8 +11,10 @@ import com.agenda.agendaProject.repository.ServicoRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +50,8 @@ public class AgendaService {
     public AgendaDTO realizarServico(Long id){
         Agenda agenda = agendaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Agendamento nao encontrado"));
-        if (!agenda.getStatus()){
+
+        if (!agenda.isStatus()){
             agenda.setStatus(true);       // marca o trampo como true
             agendaRepository.save(agenda);
         } else {
@@ -57,32 +60,61 @@ public class AgendaService {
         return converterParaDTO(agenda);
     }
 
+    @Transactional
+    public Agenda atualizarAgenda(int id, Agenda agendaAtualizada) {
+        Agenda agendaExistente = agendaRepository.findById((long) id)
+                .orElseThrow(() -> new RuntimeException("Agenda não tem"));
+
+        if (agendaExistente.isStatus()) {
+            throw new RuntimeException("Não é possível editar.");
+        }
+
+        validarDuplicidade(agendaAtualizada);
+
+        agendaExistente.setDescricao(agendaAtualizada.getDescricao());
+        agendaExistente.setServico(agendaAtualizada.getServico());
+        agendaExistente.setData(agendaAtualizada.getData());
+        agendaExistente.setCliente(agendaAtualizada.getCliente());
+        agendaExistente.setFuncionario(agendaAtualizada.getFuncionario());
+        agendaExistente.setUsuario(agendaAtualizada.getUsuario());
+
+        return agendaRepository.save(agendaExistente);
+    }
+
+    private void validarDuplicidade(Agenda agenda) {
+        Optional<Agenda> agendaExistente = agendaRepository
+                .findByDataAndClienteId(agenda.getCliente(), agenda.getData()   );
+
+        if (agendaExistente.isPresent() && agendaExistente.get().getId() != agenda.getId()) {
+            throw new RuntimeException("Já existe um agendamento para o cliente na mesma data e horário.");
+        }
+    }
+
     public void deletarAgenda(Long id){
         Agenda agenda = agendaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Agenda nao encontrada"));
-        if (agenda.getStatus()){
-            throw new RuntimeException("Serviço realizado nao pode ser excluido");
+        if (agenda.isStatus()){
+            throw new RuntimeException("Serviço realizado nao pode ser excluido com status");
         }
         agendaRepository.delete(agenda);
     }
 
     private Agenda converterParaEntidade(Agenda agendaDTO){
         Agenda agenda = new Agenda();
+        agenda.setId(agendaDTO.getId());
         agenda.setDescricao(agendaDTO.getDescricao());
         agenda.setData(agendaDTO.getData());
-        agenda.setStatus(agendaDTO.getStatus());
-//        agenda.setCliente(clienteService.buscarPorId(agendaDTO.getClienteId()));
-        agenda.setFuncionario(funcionarioService.buscarPorId(agendaDTO.getFuncionarioId()));
-        agenda.setServico(servicoService.buscarPorId(agendaDTO.getServicoId()));
+        agenda.setStatus(agendaDTO.isStatus());
+
         return agenda;
     }
 
     private AgendaDTO converterParaDTO(Agenda agenda){
         AgendaDTO agendaDTO = new AgendaDTO();
 
-        agendaDTO.setId(agenda.getId());
+        agendaDTO.setId(Long.valueOf(agenda.getId()));
         agendaDTO.setDescricao(agenda.getDescricao());
-        agendaDTO.setData(agenda.getData());
+        agendaDTO.setData(String.valueOf(agenda.getData()));
         agendaDTO.setStatus(agenda.isStatus());
         if (agenda.getCliente() != null){
             ClienteDTO clienteDTO = new ClienteDTO();
@@ -90,90 +122,7 @@ public class AgendaService {
             clienteDTO.setNome(agenda.getCliente().getNome());
             clienteDTO.setTelefone(agenda.getCliente().getTelefone());
             clienteDTO.setEmail(agenda.getCliente().getEmail());
-            agendaDTO.setCliente(clienteDTO);
         }
-
-//        agendaDTO.setClienteId(clienteService.converterParaDTO(agenda.getCliente()));
-//        agendaDTO.setFuncionarioId(funcionarioService.converterParaDTO(agenda.getFuncionario()));
-//        agendaDTO.setServicoId(servicoService.converterParaDTO(agenda.getServico()));
         return agendaDTO;
     }
-
-
-
-
 }
-
-
-//
-//    public Agenda buscarPorId(Long id) {
-//        return agendaRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado!")); // Retorna o agendamento ou lança exceção
-//    }
-//
-//    public void concluirAgendamento(Long id) {
-//        Agenda agenda = buscarPorId(id);
-//        if (agenda.isStatus()) {
-//            throw new IllegalArgumentException("Agendamento já foi concluído.");
-//        }
-//        agenda.setStatus(true);
-//        agendaRepository.save(agenda);
-//    }
-//
-//    public void deletar(Long id) {
-//        Agenda agenda = buscarPorId(id);
-//        if (agenda.isStatus()) {
-//            throw new IllegalArgumentException("Não é permitido excluir agendamentos concluídos.");
-//        }
-//        agendaRepository.delete(agenda);
-//    }
-//
-//}
-
-
-//    @Autowired
-//    public AgendaService(AgendaRepository agendaRepository,
-//                         ClienteRepository clienteRepository,
-//                         ServicoRepository servicoRepository,
-//                         FuncionarioRepository funcionarioRepository) {
-//        this.agendaRepository = agendaRepository;
-//        this.clienteRepository = clienteRepository;
-//        this.servicoRepository = servicoRepository;
-//        this.funcionarioRepository = funcionarioRepository;
-//    }
-//
-//    public AgendaDTO criar(AgendaDTO dto){
-//        validarAgendamento(dto);
-//
-//        Agenda agenda = new Agenda();
-//        agenda.setDescricao(dto.getDescricao());
-//        agenda.setDataHora(dto.getDataHora());
-//        agenda.setStatus(false);
-//
-//        agenda.setCliente(clienteRepository.findById(dto.getClienteId())
-//                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado")));
-//
-//        agenda.setServico(servicoRepository.findById(dto.getServicoId())
-//                .orElseThrow(() -> new EntityNotFoundException("não achou")));
-//
-//        agenda.setFuncionario(funcionarioRepository.findById(dto.getFuncionarioId())
-//                .orElseThrow(() -> new EntityNotFoundException(" não encontrado")));
-//
-//        return converterParaDTO(agendaRepository.save(agenda));
-//    }
-//
-//    private void validarAgendamento(AgendaDTO dto) {
-//        Cliente cliente = clienteRepository.findById(dto.getClienteId())
-//                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
-//
-//        LocalDateTime inicio = dto.getDataHora().minusMinutes(30);
-//        LocalDateTime fim = dto.getDataHora().plusMinutes(30);
-//
-//    }
-//
-//    public void concluirAgendamento(Long id) {
-//        Agenda agenda = agendaRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado"));
-//
-//        agenda.setStatus(true);
-//        agendaRepository.save(agenda);

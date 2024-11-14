@@ -1,8 +1,10 @@
 package com.agenda.agendaProject.controller;
 
-import com.agenda.agendaProject.dto.UsuarioDTO;
+import com.agenda.agendaProject.model.Usuario;
 import com.agenda.agendaProject.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
@@ -16,27 +18,37 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<UsuarioDTO> getAllUsuarios() {
+    public List<Usuario> getAllUsuarios() {
         return usuarioService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public UsuarioDTO getUsuarioById(@PathVariable int id) {
-        return usuarioService.findById(id);
+        @GetMapping
+    public List<Usuario> listarUsuarios() {
+        return usuarioService.listarTodosUsuarios();
     }
 
+    @GetMapping("/{id}")
+    public Usuario buscarPorId(@PathVariable Long id) {
+        return usuarioService.buscarPorId(id);
+    }
+
+
+
     @PostMapping
-    public UsuarioDTO createUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.createUsuario(usuarioDTO);
+    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
+        Usuario usuario1 = usuarioService.salvarUsuario(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario1);
     }
 
     @PutMapping("/{id}")
-    public UsuarioDTO updateUsuario(@PathVariable int id, @RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.updateUsuario(id, usuarioDTO);
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
+        Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
+        return ResponseEntity.ok(usuario);
     }
 
+
     @DeleteMapping("/{id}")
-    public void deleteUsuario(@PathVariable int id) {
-        usuarioService.deleteUsuario(id);
+    public void deletarUsuario(@PathVariable int id) {
+        usuarioService.deletarUsuarioId((long) id);
     }
 }

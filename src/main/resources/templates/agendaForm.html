@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulário de Agenda</title>
+</head>
+<body>
+<h1>Formulário de Agenda</h1>
+<form th:action="@{/agendas/salvar}" th:object="${agendaDTO}" method="post">
+    <label>Descrição:</label>
+    <input type="text" th:field="*{descricao}" required />
+
+    <label>Data:</label>
+    <input type="date" th:field="*{data}" required />
+
+    <label>Cliente ID:</label>
+    <input type="number" th:field="*{clienteId}" required />
+
+    <label>Funcionário ID:</label>
+    <input type="number" th:field="*{funcionarioId}" required />
+
+    <label>Usuário ID:</label>
+    <input type="number" th:field="*{usuarioId}" required />
+
+    <label>Serviço ID:</label>
+    <input type="number" th:field="*{servicoId}" required />
+
+    <button type="submit">Salvar</button>
+</form>
+</body>
+</html>

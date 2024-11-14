@@ -23,15 +23,24 @@ public class ClienteController {
     @Autowired
     private EnderecoService enderecoService;
 
+
+
+    //tratar erro de validação do criar cliente
+    @PostMapping
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO clienteDTO) {
+        return clienteService.salvarCliente(clienteDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarCliente(@PathVariable int id) {
+        clienteService.deletarCliente(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public List<ClienteDTO> listarTodosClientes() {
         return clienteService.listarClientes();
     }
-
-//    @GetMapping
-//    public ClienteDTO buscarClientePorId(@PathVariable Long id) {
-//        return clienteService.buscarPorId(id);
-//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDTO> buscarClientePorId(@PathVariable Long id) {
@@ -42,18 +51,7 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
-    //tratar erro de validação do criar cliente
-    @PostMapping
-    public ClienteDTO criarCliente(@RequestBody ClienteDTO clienteDTO) {
-        return clienteService.salvarCliente(clienteDTO);
-    }
 
 
 
-    @DeleteMapping("/{id}") {
-        public void deletarAgenda(@PathVariable Long id){
-            clienteService.deletarCliente(id);
-        }
-
-    }
 }

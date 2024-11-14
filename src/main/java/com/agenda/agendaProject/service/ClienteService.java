@@ -20,17 +20,17 @@ public class ClienteService {
     private EnderecoService enderecoService;
 
 
-    public List<ClienteDTO> listarClientes(){
+    public List<ClienteDTO> listarClientes() {
         return clienteRepository.findAll().stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
-    public ClienteDTO buscarPorId(Long id){
+    public ClienteDTO buscarPorId(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("tem nao paizao"));
         return converterParaDTO(cliente);
     }
 
-    public ClienteDTO salvarCliente(ClienteDTO clienteDTO){
+    public ClienteDTO salvarCliente(ClienteDTO clienteDTO) {
         EnderecoDTO enderecoDTO = enderecoService.buscaEnderecoPorCep(clienteDTO.getEndereco().getCep());
 
         clienteDTO.setEndereco(enderecoDTO);
@@ -40,13 +40,13 @@ public class ClienteService {
         return converterParaDTO(cliente);
     }
 
-    public void deletarCliente(Long id){
+    public void deletarCliente(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("cliente deletado"));
         clienteRepository.delete(cliente);
     }
 
-    private Cliente converterParaEntidade(ClienteDTO clienteDTO){
+    private Cliente converterParaEntidade(ClienteDTO clienteDTO) {
         Cliente cliente = new Cliente();
         cliente.setNome(clienteDTO.getNome());
         cliente.setTelefone(clienteDTO.getTelefone());
@@ -70,7 +70,7 @@ public class ClienteService {
         endereco.setUf(enderecoDTO.getUf());
         endereco.setCep(enderecoDTO.getCep());
         endereco.setCidade(enderecoDTO.getCidade());
-        endereco.setNumero(enderecoDTO.getNumero());
+        endereco.setNumero(Integer.parseInt(enderecoDTO.getNumero()));
         endereco.setComplemento(enderecoDTO.getComplemento());
         return endereco;
     }
@@ -81,45 +81,8 @@ public class ClienteService {
         enderecoDTO.setUf(endereco.getUf());
         enderecoDTO.setCep(endereco.getCep());
         enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setNumero(endereco.getNumero());
+        enderecoDTO.setNumero(String.valueOf(endereco.getNumero()));
         enderecoDTO.setComplemento(endereco.getComplemento());
         return enderecoDTO;
     }
-
-
-
-
 }
-
-
-
-
-
-//    @Autowired
-//    private ClienteRepository clienteRepository;
-//
-//    public void salvar(Cliente cliente) {
-//        clienteRepository.save(cliente);
-//    }
-//
-//    public List<Cliente> listarClientes() {
-//        return clienteRepository.findAll();
-//    }
-//
-//    public Cliente buscarPorId(Long id) {
-//        return clienteRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"));
-//    }
-//
-//    public Cliente salvarCliente(Cliente cliente) {
-//        return clienteRepository.save(cliente);
-//    }
-//
-//    public void deletarCliente(Long id) {
-//        Cliente cliente = buscarPorId(id);
-//        clienteRepository.delete(cliente);
-//    }
-//}
-
-
-

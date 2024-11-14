@@ -25,7 +25,7 @@ public class EnderecoDTO {
         this.logradouro = logradouro;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 

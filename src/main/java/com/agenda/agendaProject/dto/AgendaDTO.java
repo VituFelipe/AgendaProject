@@ -1,13 +1,10 @@
 package com.agenda.agendaProject.dto;
 
-import com.agenda.agendaProject.model.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @Builder
@@ -28,7 +25,7 @@ public class AgendaDTO {
     private String servicoNome;
     private String funcionarioNome;
 
-    public Cliente getId() {
+    public Long getId() {
         return id;
     }
 
@@ -44,7 +41,7 @@ public class AgendaDTO {
         this.descricao = descricao;
     }
 
-    public LocalDate getData(){
+    public String getData(){
         return data;
     }
 

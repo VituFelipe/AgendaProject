@@ -7,14 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface AgendaRepository extends JpaRepository<Agenda, Long> {
     Optional<Agenda> findByDataAndClienteId(LocalDateTime data, int clienteId);
-//    boolean existsByClienteAndData(Cliente cliente, LocalDate data);
+    boolean existsByClienteAndData(Cliente cliente, LocalDate data);
+
+    boolean existsByClienteAndData(Long id);
+
+    Optional<Agenda> findByDataAndClienteId(Cliente cliente, LocalDate data);
 //    List<Agenda> findByDataHoraBetween(LocalDateTime inicio, LocalDateTime fim);
 //
-    boolean existsByClienteAndData(Long id);
+//    boolean existsByClienteAndData(Long id);
 }

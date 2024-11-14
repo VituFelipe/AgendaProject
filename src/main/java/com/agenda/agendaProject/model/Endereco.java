@@ -67,7 +67,7 @@ public class Endereco {
         this.cidade = cidade;
     }
 
-    public String getNumero() {
+    public int getNumero() {
         return numero;
     }
 

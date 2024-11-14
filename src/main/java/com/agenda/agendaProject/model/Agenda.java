@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -36,7 +35,7 @@ public class Agenda {
 
     public boolean status;
 
-    public long getId() {
+    public int getId() {
         return agendaId;
     }
 
@@ -60,7 +59,7 @@ public class Agenda {
         this.servico = servico;
     }
 
-    public LocalDateTime getData() {
+    public LocalDate getData() {
         return data;
     }
 
@@ -100,32 +99,4 @@ public class Agenda {
         this.status = status;
     }
 
-    }
 }
-
-//@Entity
-//@Data
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Table(name = "agendas")
-//public class Agenda {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    private String descricao;
-//
-//    private LocalDateTime dataHora;
-//
-//    private Cliente cliente;
-//
-//    @ManyToOne
-//    private Servico servico;
-//
-//    @ManyToOne
-//    private Funcionario funcionario;
-//
-//    private Boolean status = false;
-
-//}
