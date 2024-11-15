@@ -19,8 +19,20 @@ public class Agenda {
     @ManyToOne
     private Cliente cliente;
 
+    private Funcionario funcionario;
+
     @ManyToOne
     private Usuario usuario;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    private boolean status;
 
     public int getId() {
         return agendaId;
@@ -68,5 +80,14 @@ public class Agenda {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 }

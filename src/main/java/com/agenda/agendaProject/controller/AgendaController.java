@@ -8,6 +8,7 @@ import com.agenda.agendaProject.repository.AgendaRepository;
 import com.agenda.agendaProject.repository.ClienteRepository;
 import com.agenda.agendaProject.repository.ServicoRepository;
 import com.agenda.agendaProject.repository.UsuarioRepository;
+import com.agenda.agendaProject.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +35,18 @@ public class AgendaController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private AgendaService agendaService;
+
+
+    @GetMapping("/form")
+    public String formAgenda(Model model, @RequestParam(required = false) Integer id) {
+        Agenda agenda = id != null ? agendaService.buscarAgendaPorId(id).orElse(new Agenda()) : new Agenda();
+        model.addAttribute("agenda", agenda);
+        model.addAttribute("clientes", clienteService.listarTodosClientes());
+        model.addAttribute("funcionarios", funcionarioService.listarTodosFuncionarios());
+        return "agenda/form";
+    }
 
 
     @GetMapping("/agenda")
