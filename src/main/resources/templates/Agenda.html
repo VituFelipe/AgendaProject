@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Serviços</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h2>Agenda de Serviços</h2>
+<form action="/submit-agenda" method="POST" class="agenda-form">
+    <div class="form-group">
+        <label for="id">Identificador do Serviço:</label>
+        <input type="text" id="id" name="id" placeholder="Ex.: 12345" required>
+    </div>
+
+    <div class="form-group">
+        <label for="descricao">Descrição do Serviço:</label>
+        <textarea id="descricao" name="descricao" rows="3" placeholder="Descrição dos Serviços" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="servico">Serviço:</label>
+        <select id="servico" name="servico" required>
+            <option value="" disabled selected>Selecione o serviço</option>
+            <option value="servico 1">Serviço 1</option>
+            <option value="servico 2">servico 2</option>
+            <option value="servico 3">servico 3</option>
+            <option value="outros servicos">Outros Serviços</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="data">Data do Agendamento de Serviço:</label>
+        <input type="date" id="data" name="data" required>
+    </div>
+
+    <div class="form-group">
+        <label for="cliente">Cliente:</label>
+        <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente" required>
+    </div>
+
+    <div class="form-group">
+        <label for="funcionario">Funcionário:</label>
+        <input type="text" id="funcionario" name="funcionario" placeholder="Nome do funcionário responsável" required>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn-submit">Salvar Agenda</button>
+    </div>
+</form>
+</body>
+</html>
+
