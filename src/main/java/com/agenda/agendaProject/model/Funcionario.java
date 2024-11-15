@@ -1,8 +1,10 @@
 package com.agenda.agendaProject.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+
 public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,13 +14,11 @@ public class Funcionario {
     private String telefone;
     private String email;
 
-    @OneToOne
-    @JoinColumn(name = "endereco")
+    @jakarta.persistence.OneToOne
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     private double salario;
-
-    // Getters e Setters
 
     public int getId() {
         return id;
@@ -68,4 +68,6 @@ public class Funcionario {
         this.salario = salario;
     }
 }
+
+
 
