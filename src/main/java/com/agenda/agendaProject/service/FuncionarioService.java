@@ -15,23 +15,19 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    // Lista todos os funcionários cadastrados
     public List<Funcionario> listarTodosFuncionarios() {
         return funcionarioRepository.findAll();
     }
 
-    // Busca um funcionário específico pelo seu ID
     public Optional<Funcionario> buscarPorId(int id) {
         return funcionarioRepository.findById(id);
     }
 
-    // Salva um novo funcionário
     @Transactional
     public Funcionario salvarFuncionario(Funcionario funcionario) {
         return funcionarioRepository.save(funcionario);
     }
 
-    // Atualiza um funcionário existente
     @Transactional
     public Funcionario atualizarFuncionario(int id, Funcionario funcionarioAtualizado) {
         Funcionario funcionarioExistente = funcionarioRepository.findById(id)
@@ -46,7 +42,6 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarioExistente);
     }
 
-    // Exclui um funcionário pelo seu ID
     @Transactional
     public void excluirFuncionario(int id) {
         if (funcionarioRepository.existsById(id)) {
@@ -56,12 +51,10 @@ public class FuncionarioService {
         }
     }
 
-    // Busca funcionários pelo nome, utilizando um filtro parcial
     public List<Funcionario> buscarPorNome(String nome) {
         return funcionarioRepository.findByNomeContainingIgnoreCase(nome);
     }
 
-    // Busca funcionários com salário maior que um valor específico
     public List<Funcionario> buscarPorSalarioAcimaDe(double salario) {
         return funcionarioRepository.findBySalarioGreaterThan(salario);
     }
