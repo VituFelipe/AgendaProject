@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial da AgendaProject</title>
+    <style>
+        /* Reset de margens e padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f4f6f9;
+            color: #34495e;
+        }
+
+        /* Estilo da barra de navegação (parte superior) */
+        .navbar {
+            width: 100%;
+            background-color: #8e44ad; /* Roxo */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .navbar h2 {
+            font-size: 1.5em;
+            margin-right: 50px;
+        }
+
+        .navbar a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            margin: 0 10px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #9b59b6; /* Cor mais clara para hover */
+        }
+
+        /* Estilo do conteúdo principal */
+        .main-content {
+            margin-top: 80px; /* Espaço para a barra de navegação */
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #34495e;
+            margin-bottom: 30px;
+        }
+
+        .intro-text {
+            text-align: center;
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 1em;
+            color: #7f8c8d;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .navbar a {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar a {
+                font-size: 0.9em;
+                padding: 6px 12px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Navegação (Parte Superior) -->
+<div class="navbar">
+    <h2>Menu</h2>
+    <a href="/agenda">Agendas</a>
+    <a href="/clientes">Clientes</a>
+    <a href="/funcionarios">Funcionários</a>
+    <a href="/usuarios">Usuários</a>
+    <a href="/servicos">Serviços</a>
+    <a href="/relatorios">Relatórios</a>
+</div>
+
+<!-- Conteúdo Principal -->
+<div class="main-content">
+    <h1>Bem-vindo a AgendaProject</h1>
+    <h2>Nossa Agenda que deu Trabalho para construir para agendar o seu Trabalho</h2>
+
+    <div class="intro-text">
+        <p>Faz o que quiser aqui de agendamento paizão, é tudo nosso.</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; Herick Oower Souza Pinto 04722044,
+            Matheus Augusto Estrella 04722056,
+            Maria Eduarda de Souza Garcia 04722069,
+            Victor Felipe 04723553</p>
+    </div>
+</div>
+
+</body>
+</html>
