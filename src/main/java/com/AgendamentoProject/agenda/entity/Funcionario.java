@@ -12,7 +12,6 @@ public class Funcionario {
     private String telefone;
     private String email;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
 
     private double salario;

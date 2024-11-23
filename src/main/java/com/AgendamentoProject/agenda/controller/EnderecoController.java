@@ -6,74 +6,99 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/endereco")
 public class EnderecoController {
 
-    @Autowired
     private EnderecoService enderecoService;
 
+   @GetMapping("/enderecos")
+    public ModelAndView findAll(){
+       ModelAndView mv = new ModelAndView("/endereco/enderecos");
+       mv.addObject("enderecos", enderecoService.findALl());
+       return mv;
+   }
 
-    @GetMapping("/adicionar")
-    public String adcEndereco(Model model){
-        model.addAttribute("endereco", new Endereco());
-        return "endereco/adicionar";
+    @GetMapping("/enderecoDelete/{id}")
+    public ModelAndView delete(@PathVariable("id") Integer id) {
+        enderecoService.delete(id);
+        return findAll();
     }
 
-    @PostMapping("/salvar")
-    public String salvarEndereco(@ModelAttribute Endereco endereco) {
-        enderecoService.salvarEndereco(endereco);
-        return "redirect:/endereco/adicionar";
+
+    @PostMapping("/endereco")
+    public ModelAndView save(Endereco endereco) {
+        enderecoService.add(endereco);
+        return findAll();
     }
 
-    @GetMapping("/buscarPorCep/{cep}")
-    @ResponseBody
-    public Endereco buscarEnderecoPorCep(@PathVariable String cep) {
-        Endereco endereco = enderecoService.buscarEnderecoExternoPorCep(cep); // Chama a API externa
-        return endereco;
-    }
-
-    @GetMapping
-    public String listarEnderecos(Model model){
-        List<Endereco> enderecos = enderecoService.listarEnderecos();
-        model.addAttribute("enderecos", enderecos);
-        return "/endereco/listar";
-    }
-
-    @GetMapping("/buscar/{cep}")
-    public String buscarEnderecoBanco(@PathVariable String cep, Model model) {
-        enderecoService.buscarPorCep(cep)
-                .ifPresentOrElse(
-                        endereco -> model.addAttribute("endereco", endereco),
-                        () -> model.addAttribute("mensagem", "Endereço não encontrado.")
-                );
-        return "/endereco/detalhes-endereco";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String editarEndereco(@PathVariable int id, Model model) {
-        Optional<Endereco> enderecoOptional = enderecoService.buscarPorId(id);
-        if (enderecoOptional.isPresent()) {
-            model.addAttribute("endereco", enderecoOptional.get());
-            return "/endereco/editar";
+    @GetMapping("/buscarCep/{cep}")
+    public ModelAndView buscarCep(@PathVariable("cep") String cep, Model model) {
+        try {
+            Endereco endereco = enderecoService.buscarEnderecoExternoPorCep(cep);
+            model.addAttribute("endereco", endereco);
+            return new ModelAndView("endereco/enderecoform");
+        } catch (Exception e) {
+            model.addAttribute("mensagem", "Erro ao buscar o CEP: " + e.getMessage());
+            return new ModelAndView("endereco/enderecoform");
         }
-        model.addAttribute("mensagem", "Endereço não encontrado.");
-        return "redirect:/endereco";
     }
 
-    @PostMapping("/atualizar")
-    public String atualizarEndereco(@ModelAttribute Endereco endereco) {
-        enderecoService.salvarEndereco(endereco);
-        return "redirect:/endereco";
-    }
-
-    @DeleteMapping("/excluir/{id}")
-    public String excluirEndereco(@PathVariable int id) {
-        enderecoService.excluirEndereco(id);
-        return "redirect:/endereco"; //fazer depois para redirecionar
-    }
+//
+//    @PostMapping("/salvar")
+//    public String salvarEndereco(@ModelAttribute Endereco endereco) {
+//        enderecoService.salvarEndereco(endereco);
+//        return "redirect:/endereco/adicionar";
+//    }
+//
+//    @GetMapping("/buscarPorCep/{cep}")
+//    @ResponseBody
+//    public Endereco buscarEnderecoPorCep(@PathVariable String cep) {
+//        Endereco endereco = enderecoService.buscarEnderecoExternoPorCep(cep); // Chama a API externa
+//        return endereco;
+//    }
+//
+//    @GetMapping
+//    public String listarEnderecos(Model model){
+//        List<Endereco> enderecos = enderecoService.listarEnderecos();
+//        model.addAttribute("enderecos", enderecos);
+//        return "/endereco/listar";
+//    }
+//
+//    @GetMapping("/buscar/{cep}")
+//    public String buscarEnderecoBanco(@PathVariable String cep, Model model) {
+//        enderecoService.buscarPorCep(cep)
+//                .ifPresentOrElse(
+//                        endereco -> model.addAttribute("endereco", endereco),
+//                        () -> model.addAttribute("mensagem", "Endereço não encontrado.")
+//                );
+//        return "/endereco/detalhes-endereco";
+//    }
+//
+//    @GetMapping("/editar/{id}")
+//    public String editarEndereco(@PathVariable int id, Model model) {
+//        Optional<Endereco> enderecoOptional = enderecoService.buscarPorId(id);
+//        if (enderecoOptional.isPresent()) {
+//            model.addAttribute("endereco", enderecoOptional.get());
+//            return "/endereco/editar";
+//        }
+//        model.addAttribute("mensagem", "Endereço não encontrado.");
+//        return "redirect:/endereco";
+//    }
+//
+//    @PostMapping("/atualizar")
+//    public String atualizarEndereco(@ModelAttribute Endereco endereco) {
+//        enderecoService.salvarEndereco(endereco);
+//        return "redirect:/endereco";
+//    }
+//
+//    @DeleteMapping("/excluir/{id}")
+//    public String excluirEndereco(@PathVariable int id) {
+//        enderecoService.excluirEndereco(id);
+//        return "redirect:/endereco"; //fazer depois para redirecionar
+//    }
 }

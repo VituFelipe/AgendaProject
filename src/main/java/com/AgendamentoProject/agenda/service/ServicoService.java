@@ -1,5 +1,7 @@
 package com.AgendamentoProject.agenda.service;
 
+import com.AgendamentoProject.agenda.entity.Agenda;
+import com.AgendamentoProject.agenda.entity.Cliente;
 import com.AgendamentoProject.agenda.entity.Servico;
 import com.AgendamentoProject.agenda.repository.ServicoRepository;
 import jakarta.transaction.Transactional;
@@ -15,30 +17,50 @@ public class ServicoService {
     @Autowired
     private ServicoRepository servicoRepository;
 
-    @Transactional
-    public Servico criarServico(Servico servico){
-        return servicoRepository.save(servico);
-    }
-    @Transactional
-    public List<Servico> listarServico(){
+    public Optional<Servico> findById(Integer id){return servicoRepository.findById(id);}
+
+
+    public List<Servico> findAll(){
         return servicoRepository.findAll();
     }
 
-    @Transactional
-    public Servico salvarServico(Servico servico){
+    public Servico add(Servico servico){
         return servicoRepository.save(servico);
     }
 
-    public Optional<Servico> buscarPorId(int id) {
-        return servicoRepository.findById(id);
+    public Servico saveService(Servico servico){
+        return servicoRepository.saveAndFlush(servico);
     }
 
-    @Transactional
-    public void excluirServico(Integer id){
-        if (servicoRepository.existsById(id)){
-            servicoRepository.deleteById(id);
-        } throw new RuntimeException("Nao achemo o serviço");
+    public void delete(Integer id){
+        servicoRepository.deleteById(id);
     }
+
+
+//    @Transactional
+//    public Servico criarServico(Servico servico){
+//        return servicoRepository.save(servico);
+//    }
+//    @Transactional
+//    public List<Servico> listarServico(){
+//        return servicoRepository.findAll();
+//    }
+//
+//    @Transactional
+//    public Servico salvarServico(Servico servico){
+//        return servicoRepository.save(servico);
+//    }
+//
+//    public Optional<Servico> buscarPorId(int id) {
+//        return servicoRepository.findById(id);
+//    }
+//
+//    @Transactional
+//    public void excluirServico(Integer id){
+//        if (servicoRepository.existsById(id)){
+//            servicoRepository.deleteById(id);
+//        } throw new RuntimeException("Nao achemo o serviço");
+//    }
 
 
 
