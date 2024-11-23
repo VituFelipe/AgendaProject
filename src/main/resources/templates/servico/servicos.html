@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Serviços</title>
+
+</head>
+<body>
+<h1>Lista de Serviços</h1>
+
+<a href="/servicoAdd">Adicionar Novo Serviço</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="servico : ${servico}">
+        <td th:text="${servico.id}">1</td>
+        <td th:text="${servico.nome}">Nome do Serviço</td>
+        <td th:text="${servico.descricao}">Descrição do Serviço</td>
+        <td th:text="${#numbers.formatDecimal(servico.preco, 2, 'COMMA', 'DOT')}">Preço</td>
+        <td>
+            <a th:href="@{'/servicoEdit/' + ${servico.id}}">Editar</a> |
+            <a th:href="@{'/servicoDelete/' + ${servico.id}}" onclick="return confirm('Tem certeza que deseja excluir este serviço?')">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="/">Voltar para o Início</a>
+</body>
+</html>

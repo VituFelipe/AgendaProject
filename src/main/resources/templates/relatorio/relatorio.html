@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatórios</title>
+
+</head>
+<body>
+<h1>Relatórios</h1>
+
+<h2>Agendas</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Data</th>
+        <th>Cliente</th>
+        <th>Funcionário</th>
+        <th>Serviço</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="agenda : ${agendas}">
+        <td th:text="${agenda.id}">1</td>
+        <td th:text="${#dates.format(agenda.data, 'dd/MM/yyyy HH:mm')}">Data</td>
+        <td th:text="${agenda.cliente.nome}">Cliente</td>
+        <td th:text="${agenda.funcionario.nome}">Funcionário</td>
+        <td th:text="${agenda.servico.nome}">Serviço</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Serviços</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Preço</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="servico : ${servicos}">
+        <td th:text="${servico.id}">1</td>
+        <td th:text="${servico.nome}">Nome do Serviço</td>
+        <td th:text="${#numbers.formatDecimal(servico.preco, 2, 'COMMA', 'DOT')}">Preço</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Funcionários</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="funcionario : ${funcionarios}">
+        <td th:text="${funcionario.id}">1</td>
+        <td th:text="${funcionario.nome}">Nome do Funcionário</td>
+        <td th:text="${funcionario.email}">email@exemplo.com</td>
+        <td th:text="${funcionario.telefone}">0000-0000</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Clientes</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cliente : ${clientes}">
+        <td th:text="${cliente.id}">1</td>
+        <td th:text="${cliente.nome}">Nome do Cliente</td>
+        <td th:text="${cliente.email}">email@exemplo.com</td>
+        <td th:text="${cliente.telefone}">0000-0000</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="/">Voltar para o Início</a>
+</body>
+</html>

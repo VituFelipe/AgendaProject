@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Tipo de Acesso</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<h1>Formulário de Tipo de Acesso</h1>
+
+<form th:action="@{/tipoAcesso/salvar}" th:object="${tipoAcesso}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label for="descricao">Descrição:</label>
+    <input type="text" id="descricao" th:field="*{descricao}" required />
+    <br>
+
+    <button type="submit">Salvar</button>
+    <a href="/tipoAcesso/listar">Cancelar</a>
+</form>
+
+<br>
+<a href="/">Voltar para o Início</a>
+</body>
+</html>

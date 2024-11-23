@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 public class TipoAcesso {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private String descricao;
 

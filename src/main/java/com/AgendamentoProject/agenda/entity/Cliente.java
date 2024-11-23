@@ -2,22 +2,31 @@ package com.AgendamentoProject.agenda.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
 
+@Getter
+@Setter
+@ToString
 @Entity
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
 
     private String nome;
     private String telefone;
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Endereco endereco;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Agenda> agendamentos;
 
     public int getId() {
         return id;
@@ -57,5 +66,8 @@ public class Cliente {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+
     }
+
+
 }

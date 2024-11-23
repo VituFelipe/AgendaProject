@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendas</title>
+    <title>Formulário de Agenda</title>
     <style>
         /* Geral */
         body {
@@ -174,60 +173,57 @@
     </style>
 </head>
 <body>
+<h1 th:text="${agenda.id == null ? 'Nova Agenda' : 'Editar Agenda'}">Formulário</h1>
 
-<!-- Barra de Navegação (Parte Superior) -->
-<div class="navbar">
-    <h2>Menu</h2>
-    <a href="/agenda">Agendas</a>
-    <a href="/clientes">Clientes</a>
-    <a href="/funcionarios">Funcionários</a>
-    <a href="/usuarios">Usuários</a>
-    <a href="/servicos">Serviços</a>
-    <a href="/relatorios">Relatórios</a> <!-- Nova opção Relatórios -->
-</div>
+<form action="/agenda" method="post">
+    <input type="hidden" name="id" th:value="${agenda.id}" />
 
-<!-- Conteúdo Principal -->
-<div class="main-content">
-    <h1>Lista de Agendas</h1>
-
-    <!-- Botão "Criar Nova Agenda" -->
-    <div class="actions">
-        <a href="/agenda/criar" class="btn-primary">Criar Nova Agenda</a>
+    <div>
+        <label for="nome">Nome:</label>
+        <input type="text" th:value="${agenda.nome}" />
+    </div>
+    <div>
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" th:value="${agenda.data}" required />
     </div>
 
-    <!-- Tabela de agendas -->
-    <table>
-        <thead>
-        <tr>
-            <th>Descrição</th>
-            <th>Cliente</th>
-            <th>Funcionário</th>
-            <th>Serviço</th>
-            <th>Data</th>
-            <th>Status</th>
-            <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="agenda : ${agendas}">
-            <td th:text="${agenda.descricao}"></td>
-            <td th:text="${agenda.cliente.nome}"></td>
-            <td th:text="${agenda.funcionario.nome}"></td>
-            <td th:text="${agenda.servico.nome}"></td>
-            <td th:text="${agenda.data.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm'))}"></td>
-            <td th:text="${agenda.status ? 'Realizado' : 'Não Realizado'}"></td>
-            <td class="actions">
-                <a th:href="@{/agenda/editar/{id}(id=${agenda.id})}" class="btn-action" th:if="${!agenda.status}">Editar</a>
-                <a th:href="@{/agenda/excluir/{id}(id=${agenda.id})}" class="btn-danger"
-                   th:if="${!agenda.status}"
-                   onclick="return confirm('Deseja realmente excluir esta agenda?')">Excluir</a>
-                <a th:href="@{/agenda/realizado/{id}(id=${agenda.id})}" class="btn-warning" th:if="${!agenda.status}">Marcar como Realizado</a>
-                <span th:if="${agenda.status}">Agenda já realizada. Não é possível excluir.</span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <div>
+        <label for="cliente">Cliente:</label>
+        <select id="cliente" name="clienteId" required>
+            <option th:each="cliente : ${clientes}"
+                    th:value="${cliente.id}"
+                    th:text="${cliente.nome}">
+                Cliente
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="servico">Serviço:</label>
+        <select id="servico" name="servicoId" required>
+            <option th:each="servico : ${servicos}"
+                    th:value="${servico.id}"
+                    th:text="${servico.nome}">
+                Serviço
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="funcionario">Funcionário:</label>
+        <select id="funcionario" name="funcionarioId" required>
+            <option th:each="funcionario : ${funcionarios}"
+                    th:value="${funcionario.id}"
+                    th:text="${funcionario.nome}">
+                Funcionário
+            </option>
+        </select>
+    </div>
 
+    <button type="submit">Salvar</button>
+</form>
+
+<br>
+<a href="/agendas">Voltar para Lista</a>
+
+<p th:if="${mensagem}" th:text="${mensagem}" style="color: red;"></p>
 </body>
 </html>

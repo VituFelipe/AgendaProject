@@ -13,6 +13,7 @@ public class Servico {
     private int id;
     private String nome;
     private double valor;
+    private boolean status;
 
     public int getId() {
         return id;
@@ -37,4 +38,8 @@ public class Servico {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    public boolean isStatus() {return status;}
+
+    public void setStatus(boolean status) {this.status =  status;}
 }
