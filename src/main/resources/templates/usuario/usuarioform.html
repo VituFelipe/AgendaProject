@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Formulário de Usuário</title>
-
+  <title>Usuário Formulário</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1>Formulário de Usuário</h1>
-
-<form th:action="@{/usuarios/usuario}" th:object="${usuario}" method="post">
-  <input type="hidden" th:field="*{id}" />
+<h1 th:text="${#strings.isEmpty(usuario.id) ? 'Novo Usuário' : 'Editar Usuário'}"></h1>
+<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="post">
+  <input type="hidden" th:field="*{id}">
 
   <label for="nome">Nome:</label>
-  <input type="text" id="nome" th:field="*{nome}" required />
+  <input type="text" id="nome" th:field="*{nome}" required>
   <br>
 
   <label for="email">Email:</label>
-  <input type="email" id="email" th:field="*{email}" required />
-  <br>
-
-  <label for="senha">Senha:</label>
-  <input type="password" id="senha" th:field="*{senha}" required />
+  <input type="email" id="email" th:field="*{email}" required>
   <br>
 
   <label for="tipoAcesso">Tipo de Acesso:</label>
@@ -30,10 +24,7 @@
   <br>
 
   <button type="submit">Salvar</button>
-  <a href="/usuarios/usuarios">Cancelar</a>
+  <a th:href="@{/usuarios}">Cancelar</a>
 </form>
-
-<br>
-<a href="/">Voltar para o Início</a>
 </body>
 </html>

@@ -3,227 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário de Agenda</title>
-    <style>
-        /* Geral */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #E6E6FA; /* Cor de fundo mais suave */
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Barra de navegação superior */
-        .navbar {
-            width: 100%;
-            background-color: #8e44ad; /* Roxo */
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-        }
-
-        .navbar h2 {
-            font-size: 1.5em;
-            margin-right: 50px;
-        }
-
-        .navbar a {
-            padding: 10px 20px;
-            text-decoration: none;
-            color: white;
-            font-size: 1.1em;
-            margin: 0 10px;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-
-        .navbar a:hover {
-            background-color: #9b59b6; /* Cor mais clara para hover */
-        }
-
-        /* Estilo do conteúdo principal */
-        .main-content {
-            margin-top: 80px; /* Espaço para a barra de navegação */
-            padding: 30px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-top: 50px;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 12px 25px;
-            margin: 20px auto;
-            background-color: #7B68EE    	;
-            color: white;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 1.2em;
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #800080; /* Azul escuro no hover */
-        }
-
-        /* Estilo da tabela */
-        table {
-            width: 80%;
-            margin: 30px auto;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #8A2BE2	; /*roxo violento */
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #ecf0f1; /* Linhas alternadas mais claras */
-        }
-
-        tr:hover {
-            background-color: #bdc3c7; /* Hover nas linhas */
-        }
-
-        /* Estilo dos links e botões de ação */
-        .actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .actions a {
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 1em;
-            transition: background-color 0.3s;
-            width: 120px;
-            text-align: center;
-        }
-
-        /* Botões de ação (Editar, Excluir, Marcar como Realizado) */
-        .btn-action {
-            background-color: #7B68EE    ;
-        }
-
-        .btn-action:hover {
-            background-color: #4B0082    ;
-        }
-
-        .btn-danger {
-            background-color: #7B68EE    ;
-        }
-
-        .btn-danger:hover {
-            background-color: #7B68EE    	;
-        }
-
-        .btn-warning {
-            background-color: #7B68EE    ; /* medium state blue */
-        }
-
-        .btn-warning:hover {
-            background-color: #7B68EE    ;
-        }
-
-        .actions span {
-            color: red;
-            font-weight: bold;
-        }
-
-        /* Adicionando o estilo do botão "Copiar" */
-        .btn-copy {
-            background-color: #191970;
-        }
-
-        .btn-copy:hover {
-            background-color: #191970;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<h1 th:text="${agenda.id == null ? 'Nova Agenda' : 'Editar Agenda'}">Formulário</h1>
+<h1>Formulário de Agenda</h1>
 
-<form action="/agenda" method="post">
-    <input type="hidden" name="id" th:value="${agenda.id}" />
+<form th:action="@{/agenda}" th:object="${agenda}" method="post">
+    <input type="hidden" th:field="*{id}" />
 
-    <div>
-        <label for="nome">Nome:</label>
-        <input type="text" th:value="${agenda.nome}" />
-    </div>
-    <div>
-        <label for="data">Data:</label>
-        <input type="date" id="data" name="data" th:value="${agenda.data}" required />
-    </div>
+    <label for="data">Data:</label>
+    <input type="datetime-local" id="data" th:field="*{data}" required />
+    <br>
 
-    <div>
-        <label for="cliente">Cliente:</label>
-        <select id="cliente" name="clienteId" required>
-            <option th:each="cliente : ${clientes}"
-                    th:value="${cliente.id}"
-                    th:text="${cliente.nome}">
-                Cliente
-            </option>
-        </select>
-    </div>
-    <div>
-        <label for="servico">Serviço:</label>
-        <select id="servico" name="servicoId" required>
-            <option th:each="servico : ${servicos}"
-                    th:value="${servico.id}"
-                    th:text="${servico.nome}">
-                Serviço
-            </option>
-        </select>
-    </div>
-    <div>
-        <label for="funcionario">Funcionário:</label>
-        <select id="funcionario" name="funcionarioId" required>
-            <option th:each="funcionario : ${funcionarios}"
-                    th:value="${funcionario.id}"
-                    th:text="${funcionario.nome}">
-                Funcionário
-            </option>
-        </select>
-    </div>
+    <label for="cliente">Cliente:</label>
+    <select id="cliente" th:field="*{cliente.id}">
+        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nome}"></option>
+    </select>
+    <br>
+
+    <label for="funcionario">Funcionário:</label>
+    <select id="funcionario" th:field="*{funcionario.id}">
+        <option th:each="funcionario : ${funcionarios}" th:value="${funcionario.id}" th:text="${funcionario.nome}"></option>
+    </select>
+    <br>
+
+    <label for="servico">Serviço:</label>
+    <select id="servico" th:field="*{servico.id}">
+        <option th:each="servico : ${servicos}" th:value="${servico.id}" th:text="${servico.descricao}"></option>
+    </select>
+    <br>
 
     <button type="submit">Salvar</button>
+    <a href="/agendas">Cancelar</a>
 </form>
 
 <br>
-<a href="/agendas">Voltar para Lista</a>
-
-<p th:if="${mensagem}" th:text="${mensagem}" style="color: red;"></p>
+<a href="/">Voltar para o Início</a>
 </body>
 </html>

@@ -1,7 +1,5 @@
 package com.AgendamentoProject.agenda.controller;
 
-import com.AgendamentoProject.agenda.entity.Cliente;
-import com.AgendamentoProject.agenda.entity.TipoAcesso;
 import com.AgendamentoProject.agenda.entity.Usuario;
 import com.AgendamentoProject.agenda.service.TipoAcessoService;
 import com.AgendamentoProject.agenda.service.UsuarioService;
@@ -13,9 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -26,40 +21,44 @@ public class UsuarioController {
     @Autowired
     private TipoAcessoService tipoAcessoService;
 
-    @GetMapping("/usuarios")
-    public ModelAndView findAll() {
-        ModelAndView mv = new ModelAndView("/usuario/usuarios");
-        mv.addObject("usuarios", usuarioService.findAll());
-        return mv;
+    @GetMapping
+    public String findAll(Model model) {
+        model.addAttribute("usuarios", usuarioService.findAll());
+        return "usuario/usuarios";
     }
 
-    @GetMapping("/usuario")
-    public ModelAndView add(Usuario usuario) {
-        ModelAndView mv = new ModelAndView("usuario/usuarioform");
-        mv.addObject("usuarios", usuarioService.findAll());
-        return mv;
+    @GetMapping("/novo")
+    public String addForm(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("tiposAcesso", tipoAcessoService.listarTipoAcesso());
+        return "usuario/usuarioform";
     }
 
-    @GetMapping("/usuarioDelete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id) {
-        usuarioService.delete(id);
-        return findAll();
+    @GetMapping("/editar/{id}")
+    public String editForm(@PathVariable Integer id, Model model) {
+        Usuario usuario = usuarioService.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("tiposAcesso", tipoAcessoService.listarTipoAcesso());
+        return "usuario/usuarioform";
     }
 
-    @GetMapping("/usuario/{id}")
-    public ModelAndView edit(@PathVariable("id") Integer id) {
-        return add(usuarioService.findById(id).get());
-    }
-
-    @PostMapping("/usuario")
-    public ModelAndView save(Usuario usuario, BindingResult result) {
+    @PostMapping("/salvar")
+    public String save(@Valid Usuario usuario, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return add(usuario);
+            model.addAttribute("tiposAcesso", tipoAcessoService.listarTipoAcesso());
+            return "usuario/usuarioform";
         }
         usuarioService.add(usuario);
-        return findAll();
+        return "redirect:/usuarios";
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String delete(@PathVariable Integer id) {
+        usuarioService.delete(id);
+        return "redirect:/usuarios";
     }
 }
+
 
     /*@PostMapping("/salvar")
     public String salvarUsuario(@ModelAttribute @Valid Usuario usuario, BindingResult bindingResult) {
